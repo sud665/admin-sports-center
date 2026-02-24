@@ -44,8 +44,8 @@ export default function MySlotsPage() {
       });
       toast.success("수업 가능 시간이 등록되었습니다");
       setForm({ dayOfWeek: "", startTime: "", endTime: "" });
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "오류가 발생했습니다");
     }
   }
 
@@ -53,8 +53,8 @@ export default function MySlotsPage() {
     try {
       await deleteSlot.mutateAsync(id);
       toast.success("삭제되었습니다");
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "오류가 발생했습니다");
     }
   }
 

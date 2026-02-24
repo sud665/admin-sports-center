@@ -51,6 +51,7 @@ export function InstructorDialog({
     rate: "",
   });
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (instructor) {
       setForm({
@@ -70,6 +71,7 @@ export function InstructorDialog({
       });
     }
   }, [instructor, open]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -94,8 +96,8 @@ export function InstructorDialog({
         toast.success("강사가 등록되었습니다");
       }
       onOpenChange(false);
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "오류가 발생했습니다");
     }
   }
 

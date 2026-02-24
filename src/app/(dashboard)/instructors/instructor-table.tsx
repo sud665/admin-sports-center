@@ -43,8 +43,8 @@ export function InstructorTable({
       await deleteMutation.mutateAsync(deleteTarget.id);
       toast.success("강사가 비활성화되었습니다");
       setDeleteTarget(null);
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "오류가 발생했습니다");
     }
   }
 

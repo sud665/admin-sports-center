@@ -54,7 +54,7 @@ function addMinutesToTime(time: string, minutes: number): string {
 }
 
 export async function POST(req: NextRequest) {
-  const { session, error } = await getAuthSession();
+  const { error } = await getAuthSession();
   if (error) return error;
 
   const body = await req.json();

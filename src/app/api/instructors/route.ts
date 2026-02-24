@@ -6,7 +6,7 @@ import { getAuthSession, requireAdmin } from "@/lib/api-utils";
 import bcrypt from "bcryptjs";
 
 export async function GET() {
-  const { session, error } = await getAuthSession();
+  const { error } = await getAuthSession();
   if (error) return error;
 
   const instructors = await db
@@ -58,8 +58,8 @@ export async function POST(req: NextRequest) {
       .returning();
 
     return NextResponse.json(instructor, { status: 201 });
-  } catch (err: any) {
-    if (err.code === "23505") {
+  } catch (err) {
+    if (err && typeof err === "object" && "code" in err && err.code === "23505") {
       return NextResponse.json(
         { error: "이미 등록된 이메일입니다" },
         { status: 409 }

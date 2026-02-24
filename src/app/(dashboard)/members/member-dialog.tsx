@@ -40,6 +40,7 @@ export function MemberDialog({ open, onOpenChange, member }: MemberDialogProps) 
     memo: "",
   });
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (member) {
       setForm({
@@ -52,6 +53,7 @@ export function MemberDialog({ open, onOpenChange, member }: MemberDialogProps) 
       setForm({ name: "", phone: "", instructorId: "", memo: "" });
     }
   }, [member, open]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -75,8 +77,8 @@ export function MemberDialog({ open, onOpenChange, member }: MemberDialogProps) 
         toast.success("회원이 등록되었습니다");
       }
       onOpenChange(false);
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "오류가 발생했습니다");
     }
   }
 

@@ -59,6 +59,7 @@ export function BookingDialog({
     price: "",
   });
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (booking) {
       setForm({
@@ -78,6 +79,7 @@ export function BookingDialog({
       });
     }
   }, [booking, defaultDate, defaultTime, open]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -91,8 +93,8 @@ export function BookingDialog({
       });
       toast.success("예약이 등록되었습니다");
       onOpenChange(false);
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "오류가 발생했습니다");
     }
   }
 
@@ -107,8 +109,8 @@ export function BookingDialog({
         toast.success("수업이 완료 처리되었습니다");
       }
       onOpenChange(false);
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "오류가 발생했습니다");
     }
   }
 

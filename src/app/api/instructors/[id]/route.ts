@@ -8,7 +8,7 @@ export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { session, error } = await getAuthSession();
+  const { error } = await getAuthSession();
   if (error) return error;
 
   const { id } = await params;
