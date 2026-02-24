@@ -15,7 +15,7 @@ export function Header() {
   const { data: session } = useSession();
 
   return (
-    <header className="sticky top-0 z-20 flex h-14 items-center justify-end border-b bg-background px-4 md:px-6">
+    <header className="sticky top-0 z-20 flex h-14 items-center justify-end border-b bg-background pl-14 pr-4 md:pl-6 md:pr-6">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="gap-2">

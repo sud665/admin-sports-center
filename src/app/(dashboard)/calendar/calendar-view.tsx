@@ -31,7 +31,10 @@ export function CalendarView({ instructorFilter }: CalendarViewProps) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
 
   const events = (bookings ?? []).map((b) => ({

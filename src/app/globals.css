@@ -124,3 +124,26 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* FullCalendar 반응형 조정 */
+.fc .fc-event {
+  font-size: 0.75rem;
+  padding: 1px 3px;
+}
+
+@media (max-width: 768px) {
+  .fc .fc-toolbar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .fc .fc-toolbar-title {
+    font-size: 1rem;
+  }
+  .fc .fc-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  .fc .fc-event {
+    font-size: 0.65rem;
+  }
+}
