@@ -8,7 +8,8 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { useBookings, useUpdateBooking, type Booking } from "@/lib/hooks/use-bookings";
 import { BookingDialog } from "./booking-dialog";
 import { toast } from "sonner";
-import type { EventClickArg, DateClickArg, EventDropArg, DatesSetArg } from "@fullcalendar/core";
+import type { EventClickArg, EventDropArg, DatesSetArg } from "@fullcalendar/core";
+import type { DateClickArg } from "@fullcalendar/interaction";
 
 interface CalendarViewProps {
   instructorFilter?: string;

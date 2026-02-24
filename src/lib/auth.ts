@@ -50,9 +50,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id;
-        session.user.role = token.role;
-        session.user.color = token.color;
+        session.user.id = token.id as string;
+        session.user.role = token.role as "admin" | "instructor";
+        session.user.color = token.color as string | undefined;
       }
       return session;
     },
