@@ -1,8 +1,60 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { users } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
+import { users, bookings, members } from "@/lib/db/schema";
+import { eq, and, ne, desc } from "drizzle-orm";
 import { getAuthSession, requireAdmin } from "@/lib/api-utils";
+
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { session, error } = await getAuthSession();
+  if (error) return error;
+
+  const { id } = await params;
+
+  const [instructor] = await db
+    .select({
+      id: users.id,
+      email: users.email,
+      name: users.name,
+      color: users.color,
+      rate: users.rate,
+      isActive: users.isActive,
+      createdAt: users.createdAt,
+    })
+    .from(users)
+    .where(eq(users.id, id))
+    .limit(1);
+
+  if (!instructor) {
+    return NextResponse.json({ error: "강사를 찾을 수 없습니다" }, { status: 404 });
+  }
+
+  // 최근 예약 20건
+  const recentBookings = await db
+    .select({
+      id: bookings.id,
+      date: bookings.date,
+      startTime: bookings.startTime,
+      endTime: bookings.endTime,
+      memberName: members.name,
+      price: bookings.price,
+      status: bookings.status,
+    })
+    .from(bookings)
+    .leftJoin(members, eq(bookings.memberId, members.id))
+    .where(
+      and(
+        eq(bookings.instructorId, id),
+        ne(bookings.status, "cancelled")
+      )
+    )
+    .orderBy(desc(bookings.date), desc(bookings.startTime))
+    .limit(20);
+
+  return NextResponse.json({ instructor, recentBookings });
+}
 
 export async function PATCH(
   req: NextRequest,

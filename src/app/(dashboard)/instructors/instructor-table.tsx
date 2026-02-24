@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 import { useDeleteInstructor, type Instructor } from "@/lib/hooks/use-instructors";
 import { InstructorDialog } from "./instructor-dialog";
 import { toast } from "sonner";
@@ -82,7 +83,11 @@ export function InstructorTable({
                     style={{ backgroundColor: inst.color || "#ccc" }}
                   />
                 </TableCell>
-                <TableCell className="font-medium">{inst.name}</TableCell>
+                <TableCell className="font-medium">
+                  <Link href={`/instructors/${inst.id}`} className="hover:underline">
+                    {inst.name}
+                  </Link>
+                </TableCell>
                 <TableCell className="hidden md:table-cell">
                   {inst.email}
                 </TableCell>

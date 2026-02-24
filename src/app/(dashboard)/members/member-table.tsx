@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 import { useDeleteMember, type Member } from "@/lib/hooks/use-members";
 import { MemberDialog } from "./member-dialog";
 import { toast } from "sonner";
@@ -73,7 +74,11 @@ export function MemberTable({ members, isLoading }: MemberTableProps) {
           <TableBody>
             {members.map((m) => (
               <TableRow key={m.id}>
-                <TableCell className="font-medium">{m.name}</TableCell>
+                <TableCell className="font-medium">
+                  <Link href={`/members/${m.id}`} className="hover:underline">
+                    {m.name}
+                  </Link>
+                </TableCell>
                 <TableCell>{m.phone || "-"}</TableCell>
                 <TableCell>
                   {m.instructorName ? (
