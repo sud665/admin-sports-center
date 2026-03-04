@@ -4,8 +4,13 @@ import { users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { getAuthSession, requireAdmin } from "@/lib/api-utils";
 import bcrypt from "bcryptjs";
+import { isMockMode, getMockInstructors, MOCK_DEMO_RESPONSE } from "@/lib/mock-data";
 
 export async function GET() {
+  if (isMockMode()) {
+    return NextResponse.json(getMockInstructors());
+  }
+
   const { error } = await getAuthSession();
   if (error) return error;
 
@@ -26,6 +31,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  if (isMockMode()) return MOCK_DEMO_RESPONSE;
+
   const { session, error } = await getAuthSession();
   if (error) return error;
 

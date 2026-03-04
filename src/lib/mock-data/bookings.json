@@ -1,0 +1,14 @@
+[
+  {"id":"book-001","instructorId":"inst-001","memberId":"mem-001","dayOffset":0,"startTime":"10:00","endTime":"10:50","price":50000,"status":"booked"},
+  {"id":"book-002","instructorId":"inst-001","memberId":"mem-002","dayOffset":0,"startTime":"11:00","endTime":"11:50","price":50000,"status":"booked"},
+  {"id":"book-003","instructorId":"inst-002","memberId":"mem-004","dayOffset":0,"startTime":"14:00","endTime":"14:50","price":45000,"status":"booked"},
+  {"id":"book-004","instructorId":"inst-001","memberId":"mem-003","dayOffset":1,"startTime":"09:00","endTime":"09:50","price":50000,"status":"booked"},
+  {"id":"book-005","instructorId":"inst-002","memberId":"mem-005","dayOffset":1,"startTime":"15:00","endTime":"15:50","price":45000,"status":"booked"},
+  {"id":"book-006","instructorId":"inst-001","memberId":"mem-001","dayOffset":-1,"startTime":"10:00","endTime":"10:50","price":50000,"status":"completed"},
+  {"id":"book-007","instructorId":"inst-002","memberId":"mem-004","dayOffset":-1,"startTime":"14:00","endTime":"14:50","price":45000,"status":"completed"},
+  {"id":"book-008","instructorId":"inst-001","memberId":"mem-002","dayOffset":-2,"startTime":"11:00","endTime":"11:50","price":50000,"status":"completed"},
+  {"id":"book-009","instructorId":"inst-002","memberId":"mem-006","dayOffset":-2,"startTime":"16:00","endTime":"16:50","price":45000,"status":"completed"},
+  {"id":"book-010","instructorId":"inst-001","memberId":"mem-003","dayOffset":2,"startTime":"10:00","endTime":"10:50","price":50000,"status":"booked"},
+  {"id":"book-011","instructorId":"inst-002","memberId":"mem-005","dayOffset":-3,"startTime":"15:00","endTime":"15:50","price":45000,"status":"completed"},
+  {"id":"book-012","instructorId":"inst-001","memberId":"mem-001","dayOffset":-4,"startTime":"10:00","endTime":"10:50","price":50000,"status":"completed"}
+]

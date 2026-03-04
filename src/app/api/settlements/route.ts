@@ -3,8 +3,17 @@ import { db } from "@/lib/db";
 import { bookings, users } from "@/lib/db/schema";
 import { and, eq, sql, gte, lte } from "drizzle-orm";
 import { getAuthSession, requireAdmin } from "@/lib/api-utils";
+import { isMockMode, getMockSettlements } from "@/lib/mock-data";
 
 export async function GET(req: NextRequest) {
+  if (isMockMode()) {
+    const { searchParams } = new URL(req.url);
+    const now = new Date();
+    const year = Number(searchParams.get("year") ?? now.getFullYear());
+    const month = Number(searchParams.get("month") ?? now.getMonth() + 1);
+    return NextResponse.json(getMockSettlements(year, month));
+  }
+
   const { session, error } = await getAuthSession();
   if (error) return error;
 

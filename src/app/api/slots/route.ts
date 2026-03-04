@@ -3,8 +3,22 @@ import { db } from "@/lib/db";
 import { availableSlots } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { getAuthSession } from "@/lib/api-utils";
+import { isMockMode, mockSlots, MOCK_DEMO_RESPONSE } from "@/lib/mock-data";
 
 export async function GET(req: NextRequest) {
+  if (isMockMode()) {
+    const { session, error } = await getAuthSession();
+    if (error) return error;
+    const { searchParams } = new URL(req.url);
+    const instructorId =
+      searchParams.get("instructorId") ||
+      (session!.user.role === "instructor" ? session!.user.id : null);
+    const slots = instructorId
+      ? mockSlots.filter((s) => s.instructorId === instructorId)
+      : mockSlots;
+    return NextResponse.json(slots);
+  }
+
   const { session, error } = await getAuthSession();
   if (error) return error;
 
@@ -29,6 +43,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  if (isMockMode()) return MOCK_DEMO_RESPONSE;
+
   const { session, error } = await getAuthSession();
   if (error) return error;
 

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "admin-001",
+    "email": "admin@test.com",
+    "passwordHash": "$2a$10$mockhashadmin",
+    "name": "관리자",
+    "role": "admin",
+    "color": null,
+    "rate": null,
+    "isActive": true,
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "inst-001",
+    "email": "instructor@test.com",
+    "passwordHash": "$2a$10$mockhashinstructor",
+    "name": "김태권",
+    "role": "instructor",
+    "color": "#3B82F6",
+    "rate": "60.00",
+    "isActive": true,
+    "createdAt": "2025-01-15T00:00:00.000Z",
+    "updatedAt": "2025-01-15T00:00:00.000Z"
+  },
+  {
+    "id": "inst-002",
+    "email": "instructor2@test.com",
+    "passwordHash": "$2a$10$mockhashinstructor2",
+    "name": "이합기",
+    "role": "instructor",
+    "color": "#10B981",
+    "rate": "55.00",
+    "isActive": true,
+    "createdAt": "2025-02-01T00:00:00.000Z",
+    "updatedAt": "2025-02-01T00:00:00.000Z"
+  }
+]

@@ -3,8 +3,27 @@ import { db } from "@/lib/db";
 import { bookings, users, members } from "@/lib/db/schema";
 import { and, eq, gte, lte, ne, sql } from "drizzle-orm";
 import { getAuthSession } from "@/lib/api-utils";
+import { isMockMode, getMockBookings, MOCK_DEMO_RESPONSE } from "@/lib/mock-data";
 
 export async function GET(req: NextRequest) {
+  if (isMockMode()) {
+    const { session, error } = await getAuthSession();
+    if (error) return error;
+    const { searchParams } = new URL(req.url);
+    const startDate = searchParams.get("startDate");
+    const endDate = searchParams.get("endDate");
+    const instructorId = searchParams.get("instructorId");
+
+    let filteredBookings = getMockBookings().filter((b) => b.status !== "cancelled");
+    if (startDate) filteredBookings = filteredBookings.filter((b) => b.date >= startDate);
+    if (endDate) filteredBookings = filteredBookings.filter((b) => b.date <= endDate);
+    if (instructorId) filteredBookings = filteredBookings.filter((b) => b.instructorId === instructorId);
+    if (session!.user.role !== "admin") {
+      filteredBookings = filteredBookings.filter((b) => b.instructorId === session!.user.id);
+    }
+    return NextResponse.json(filteredBookings);
+  }
+
   const { session, error } = await getAuthSession();
   if (error) return error;
 
@@ -54,6 +73,8 @@ function addMinutesToTime(time: string, minutes: number): string {
 }
 
 export async function POST(req: NextRequest) {
+  if (isMockMode()) return MOCK_DEMO_RESPONSE;
+
   const { error } = await getAuthSession();
   if (error) return error;
 

@@ -3,8 +3,30 @@ import { db } from "@/lib/db";
 import { members, users } from "@/lib/db/schema";
 import { eq, and, or, ilike } from "drizzle-orm";
 import { getAuthSession, requireAdmin } from "@/lib/api-utils";
+import { isMockMode, getMockMembers, MOCK_DEMO_RESPONSE } from "@/lib/mock-data";
 
 export async function GET(req: NextRequest) {
+  if (isMockMode()) {
+    const { session, error } = await getAuthSession();
+    if (error) return error;
+    const { searchParams } = new URL(req.url);
+    const search = searchParams.get("search");
+
+    let filteredMembers = getMockMembers();
+    if (session!.user.role !== "admin") {
+      filteredMembers = filteredMembers.filter((m) => m.instructorId === session!.user.id);
+    }
+    if (search) {
+      const q = search.toLowerCase();
+      filteredMembers = filteredMembers.filter(
+        (m) =>
+          m.name.toLowerCase().includes(q) ||
+          (m.phone && m.phone.includes(q))
+      );
+    }
+    return NextResponse.json(filteredMembers);
+  }
+
   const { session, error } = await getAuthSession();
   if (error) return error;
 
@@ -47,6 +69,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  if (isMockMode()) return MOCK_DEMO_RESPONSE;
+
   const { session, error } = await getAuthSession();
   if (error) return error;
 

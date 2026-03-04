@@ -1,0 +1,7 @@
+[
+  {"id":"slot-001","instructorId":"inst-001","dayOfWeek":1,"startTime":"09:00","endTime":"12:00","isRecurring":true,"createdAt":"2025-01-15T00:00:00.000Z"},
+  {"id":"slot-002","instructorId":"inst-001","dayOfWeek":3,"startTime":"09:00","endTime":"12:00","isRecurring":true,"createdAt":"2025-01-15T00:00:00.000Z"},
+  {"id":"slot-003","instructorId":"inst-001","dayOfWeek":5,"startTime":"09:00","endTime":"12:00","isRecurring":true,"createdAt":"2025-01-15T00:00:00.000Z"},
+  {"id":"slot-004","instructorId":"inst-002","dayOfWeek":2,"startTime":"14:00","endTime":"18:00","isRecurring":true,"createdAt":"2025-02-01T00:00:00.000Z"},
+  {"id":"slot-005","instructorId":"inst-002","dayOfWeek":4,"startTime":"14:00","endTime":"18:00","isRecurring":true,"createdAt":"2025-02-01T00:00:00.000Z"}
+]

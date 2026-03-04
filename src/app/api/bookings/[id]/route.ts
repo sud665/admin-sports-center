@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { bookings } from "@/lib/db/schema";
 import { and, eq, ne, sql } from "drizzle-orm";
 import { getAuthSession } from "@/lib/api-utils";
+import { isMockMode, MOCK_DEMO_RESPONSE } from "@/lib/mock-data";
 
 function addMinutesToTime(time: string, minutes: number): string {
   const [h, m] = time.split(":").map(Number);
@@ -14,6 +15,8 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (isMockMode()) return MOCK_DEMO_RESPONSE;
+
   const { error } = await getAuthSession();
   if (error) return error;
 
@@ -90,6 +93,8 @@ export async function DELETE(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (isMockMode()) return MOCK_DEMO_RESPONSE;
+
   const { error } = await getAuthSession();
   if (error) return error;
 

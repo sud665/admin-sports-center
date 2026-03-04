@@ -4,8 +4,11 @@ import { users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { getAuthSession } from "@/lib/api-utils";
 import bcrypt from "bcryptjs";
+import { isMockMode, MOCK_DEMO_RESPONSE } from "@/lib/mock-data";
 
 export async function PATCH(req: NextRequest) {
+  if (isMockMode()) return MOCK_DEMO_RESPONSE;
+
   const { session, error } = await getAuthSession();
   if (error) return error;
 

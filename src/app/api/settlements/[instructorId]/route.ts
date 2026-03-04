@@ -3,11 +3,25 @@ import { db } from "@/lib/db";
 import { bookings, users, members } from "@/lib/db/schema";
 import { and, eq, gte, lte } from "drizzle-orm";
 import { getAuthSession } from "@/lib/api-utils";
+import { isMockMode, getMockSettlementDetail } from "@/lib/mock-data";
 
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ instructorId: string }> }
 ) {
+  if (isMockMode()) {
+    const { instructorId } = await params;
+    const { searchParams } = new URL(req.url);
+    const now = new Date();
+    const year = Number(searchParams.get("year") ?? now.getFullYear());
+    const month = Number(searchParams.get("month") ?? now.getMonth() + 1);
+    const detail = getMockSettlementDetail(instructorId, year, month);
+    if (!detail) {
+      return NextResponse.json({ error: "강사를 찾을 수 없습니다" }, { status: 404 });
+    }
+    return NextResponse.json(detail);
+  }
+
   const { session, error } = await getAuthSession();
   if (error) return error;
 

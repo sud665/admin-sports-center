@@ -3,11 +3,36 @@ import { db } from "@/lib/db";
 import { members, users, bookings } from "@/lib/db/schema";
 import { eq, and, ne, desc } from "drizzle-orm";
 import { getAuthSession, requireAdmin } from "@/lib/api-utils";
+import { isMockMode, getMockMembers, getMockBookings, MOCK_DEMO_RESPONSE } from "@/lib/mock-data";
 
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (isMockMode()) {
+    const { id } = await params;
+    const mockMembersList = getMockMembers();
+    const member = mockMembersList.find((m) => m.id === id);
+    if (!member) {
+      return NextResponse.json({ error: "회원을 찾을 수 없습니다" }, { status: 404 });
+    }
+    const bookingHistory = getMockBookings()
+      .filter((b) => b.memberId === id && b.status !== "cancelled")
+      .sort((a, b) => b.date.localeCompare(a.date))
+      .slice(0, 30)
+      .map((b) => ({
+        id: b.id,
+        date: b.date,
+        startTime: b.startTime,
+        endTime: b.endTime,
+        instructorName: b.instructorName,
+        instructorColor: b.instructorColor,
+        price: b.price,
+        status: b.status,
+      }));
+    return NextResponse.json({ member, bookingHistory });
+  }
+
   const { error } = await getAuthSession();
   if (error) return error;
 
@@ -63,6 +88,8 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (isMockMode()) return MOCK_DEMO_RESPONSE;
+
   const { session, error } = await getAuthSession();
   if (error) return error;
 
@@ -100,6 +127,8 @@ export async function DELETE(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (isMockMode()) return MOCK_DEMO_RESPONSE;
+
   const { session, error } = await getAuthSession();
   if (error) return error;
 

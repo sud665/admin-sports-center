@@ -3,8 +3,17 @@ import { db } from "@/lib/db";
 import { bookings, users, members } from "@/lib/db/schema";
 import { and, eq, gte, lte, ne, sql } from "drizzle-orm";
 import { getAuthSession } from "@/lib/api-utils";
+import { isMockMode, getMockDashboard } from "@/lib/mock-data";
 
 export async function GET() {
+  if (isMockMode()) {
+    const { session, error } = await getAuthSession();
+    if (error) return error;
+    return NextResponse.json(
+      getMockDashboard(session!.user.id, session!.user.role)
+    );
+  }
+
   const { session, error } = await getAuthSession();
   if (error) return error;
 
