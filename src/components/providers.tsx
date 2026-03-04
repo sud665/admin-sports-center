@@ -9,7 +9,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    // @ts-expect-error - next-auth v5 beta types incompatible with React 19
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
         {children}
