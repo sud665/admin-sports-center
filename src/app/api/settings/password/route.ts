@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { users } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
 import { getAuthSession } from "@/lib/api-utils";
-import bcrypt from "bcryptjs";
+import { createClient } from "@/lib/supabase/server";
 import { isMockMode, MOCK_DEMO_RESPONSE } from "@/lib/mock-data";
 
 export async function PATCH(req: NextRequest) {
@@ -28,26 +25,31 @@ export async function PATCH(req: NextRequest) {
     );
   }
 
-  const [user] = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, session!.user.id))
-    .limit(1);
+  // Verify current password by attempting sign-in
+  const supabase = await createClient();
+  const { error: signInError } = await supabase.auth.signInWithPassword({
+    email: session!.user.email,
+    password: currentPassword,
+  });
 
-  if (!user) {
-    return NextResponse.json({ error: "사용자를 찾을 수 없습니다" }, { status: 404 });
+  if (signInError) {
+    return NextResponse.json(
+      { error: "현재 비밀번호가 일치하지 않습니다" },
+      { status: 400 }
+    );
   }
 
-  const isValid = await bcrypt.compare(currentPassword, user.passwordHash);
-  if (!isValid) {
-    return NextResponse.json({ error: "현재 비밀번호가 일치하지 않습니다" }, { status: 400 });
-  }
+  // Update password via Supabase Auth
+  const { error: updateError } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
 
-  const newHash = await bcrypt.hash(newPassword, 10);
-  await db
-    .update(users)
-    .set({ passwordHash: newHash, updatedAt: new Date() })
-    .where(eq(users.id, session!.user.id));
+  if (updateError) {
+    return NextResponse.json(
+      { error: "비밀번호 변경 중 오류가 발생했습니다" },
+      { status: 500 }
+    );
+  }
 
   return NextResponse.json({ message: "비밀번호가 변경되었습니다" });
 }
