@@ -1,8 +1,9 @@
 "use client";
 
-export function CenterOnLogo({ className, size = "md" }: { className?: string; size?: "sm" | "md" | "lg" }) {
+export function CenterOnLogo({ className, size = "md", variant = "light" }: { className?: string; size?: "sm" | "md" | "lg"; variant?: "light" | "dark" }) {
   const sizeMap = { sm: "h-6", md: "h-8", lg: "h-10" };
   const textSize = { sm: "text-lg", md: "text-xl", lg: "text-2xl" };
+  const textColor = variant === "dark" ? "text-[#080708]" : "text-white";
 
   return (
     <div className={`flex items-center gap-2 ${className ?? ""}`}>
@@ -11,7 +12,7 @@ export function CenterOnLogo({ className, size = "md" }: { className?: string; s
         <path d="M16 6v10" stroke="#fff" strokeWidth="3" strokeLinecap="round"/>
         <path d="M10.5 9.5a9 9 0 1 0 11 0" stroke="#fff" strokeWidth="3" strokeLinecap="round" fill="none"/>
       </svg>
-      <span className={`${textSize[size]} font-bold tracking-tight text-white`}>
+      <span className={`${textSize[size]} font-bold tracking-tight ${textColor}`}>
         Center<span className="text-[#3772FF]">On</span>
       </span>
     </div>

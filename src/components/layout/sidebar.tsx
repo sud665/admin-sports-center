@@ -5,6 +5,7 @@ import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SidebarNav } from "./sidebar-nav";
+import { CenterOnLogo } from "@/components/landing/centeron-logo";
 
 export function Sidebar() {
   const [open, setOpen] = useState(false);
@@ -14,7 +15,7 @@ export function Sidebar() {
       {/* PC 사이드바 */}
       <aside className="hidden md:flex md:w-60 md:flex-col md:fixed md:inset-y-0 border-r bg-background z-30">
         <div className="flex h-14 items-center border-b px-4">
-          <h1 className="text-lg font-bold">필라테스 센터</h1>
+          <CenterOnLogo size="sm" variant="dark" />
         </div>
         <div className="flex-1 overflow-y-auto py-4">
           <SidebarNav />
@@ -34,7 +35,7 @@ export function Sidebar() {
         </SheetTrigger>
         <SheetContent side="left" className="w-60 p-0">
           <div className="flex h-14 items-center border-b px-4">
-            <h1 className="text-lg font-bold">필라테스 센터</h1>
+            <CenterOnLogo size="sm" variant="dark" />
           </div>
           <div className="py-4">
             <SidebarNav onNavigate={() => setOpen(false)} />

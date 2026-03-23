@@ -20,7 +20,7 @@ export function Header() {
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="gap-2">
             <Avatar className="h-7 w-7">
-              <AvatarFallback className="text-xs">
+              <AvatarFallback className="text-xs bg-[#3772FF] text-white">
                 {session?.user?.name?.[0] ?? "?"}
               </AvatarFallback>
             </Avatar>
