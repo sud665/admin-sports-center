@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 
 const checklistItems = [
@@ -11,20 +11,27 @@ const checklistItems = [
 
 const CONFETTI_COLORS = ["#3772FF", "#DF2935", "#FDCA40"];
 
+// Deterministic pseudo-random values for confetti pieces (avoids impure Math.random during render)
+const CONFETTI_PIECES = Array.from({ length: 14 }, (_, i) => {
+  // Simple hash-based deterministic values per index
+  const h1 = ((i * 2654435761) >>> 0) / 4294967296;
+  const h2 = ((i * 2246822519 + 1) >>> 0) / 4294967296;
+  const h3 = ((i * 3266489917 + 2) >>> 0) / 4294967296;
+  const h4 = ((i * 668265263 + 3) >>> 0) / 4294967296;
+  const h5 = ((i * 374761393 + 4) >>> 0) / 4294967296;
+  return {
+    id: i,
+    color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+    x: (h1 - 0.5) * 300,
+    y: (h2 - 0.5) * 300,
+    rotate: h3 * 720 - 360,
+    size: h4 * 8 + 4,
+    isCircle: h5 > 0.5,
+  };
+});
+
 function Confetti() {
-  const pieces = useMemo(
-    () =>
-      Array.from({ length: 14 }, (_, i) => ({
-        id: i,
-        color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
-        x: (Math.random() - 0.5) * 300,
-        y: (Math.random() - 0.5) * 300,
-        rotate: Math.random() * 720 - 360,
-        size: Math.random() * 8 + 4,
-        isCircle: Math.random() > 0.5,
-      })),
-    []
-  );
+  const pieces = CONFETTI_PIECES;
 
   return (
     <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
