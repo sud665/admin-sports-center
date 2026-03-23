@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/lib/hooks/use-auth";
 import { useSettlementDetail } from "@/lib/hooks/use-settlements";
 import {
   Card,
@@ -28,12 +28,12 @@ import {
 const now = new Date();
 
 export default function MySettlementsPage() {
-  const { data: session } = useSession();
+  const { user } = useAuth();
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth() + 1);
 
   const { data, isLoading } = useSettlementDetail(
-    session?.user?.id || "",
+    user?.id || "",
     year,
     month
   );

@@ -1,18 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/lib/hooks/use-auth";
 import { CalendarView } from "./calendar-view";
 import { useInstructors } from "@/lib/hooks/use-instructors";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export default function CalendarPage() {
-  const { data: session } = useSession();
+  const { user, isAdmin } = useAuth();
   const { data: instructors } = useInstructors();
   const [selectedInstructor, setSelectedInstructor] = useState<string>("");
-
-  const isAdmin = session?.user?.role === "admin";
 
   return (
     <div>
@@ -63,7 +61,7 @@ export default function CalendarPage() {
 
       <CalendarView
         instructorFilter={
-          isAdmin ? selectedInstructor || undefined : session?.user?.id
+          isAdmin ? selectedInstructor || undefined : user?.id
         }
       />
     </div>

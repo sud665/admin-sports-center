@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/lib/hooks/use-auth";
 import { useDashboard } from "@/lib/hooks/use-dashboard";
 import {
   Card,
@@ -80,10 +80,10 @@ function todayIndex(): number {
 
 export default function DashboardPage() {
   const { data, isLoading } = useDashboard();
-  const { data: session } = useSession();
+  const { user, isAdmin: authIsAdmin } = useAuth();
 
-  const role = session?.user?.role; // "admin" | "instructor" | undefined
-  const isAdmin = data?.isAdmin ?? role === "admin";
+  const role = user?.role; // "admin" | "instructor" | undefined
+  const isAdmin = data?.isAdmin ?? authIsAdmin;
   const isInstructor = role === "instructor";
   const today = todayIndex();
   const maxCount = Math.max(...weeklyData.map((d) => d.count), 1);

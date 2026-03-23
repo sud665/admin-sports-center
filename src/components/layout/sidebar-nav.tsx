@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/lib/hooks/use-auth";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -32,8 +32,8 @@ const instructorNav = [
 
 export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
-  const { data: session } = useSession();
-  const nav = session?.user?.role === "admin" ? adminNav : instructorNav;
+  const { user } = useAuth();
+  const nav = user?.role === "admin" ? adminNav : instructorNav;
 
   return (
     <nav className="space-y-1 px-3">
