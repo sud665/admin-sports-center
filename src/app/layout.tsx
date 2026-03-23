@@ -14,8 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "필라테스 센터 관리",
-  description: "강사 스케줄 예약 및 급여 정산 관리 시스템",
+  title: "CenterOn - 센터 운영을 켜다",
+  description: "필라테스 · 요가 · 헬스 센터 통합 관리. 강사 일정, 회원 관리, 급여 정산까지 하나로.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
