@@ -2,6 +2,7 @@ import usersData from "./users.json";
 import membersData from "./members.json";
 import bookingsTemplate from "./bookings.json";
 import slotsData from "./slots.json";
+import membershipsData from "./memberships.json";
 
 // --- 유틸 ---
 function formatDate(d: Date): string {
@@ -183,6 +184,17 @@ export function getMockSettlementDetail(instructorId: string, year: number, mont
       pay: Math.round((totalRevenue * rate) / 100),
     },
   };
+}
+
+// --- Mock 수강권 (회원 이름 join) ---
+export function getMockMemberships() {
+  return membershipsData.map((ms) => {
+    const member = membersData.find((m) => m.id === ms.memberId);
+    return {
+      ...ms,
+      memberName: member?.name ?? "알 수 없음",
+    };
+  });
 }
 
 // --- 데모 모드 헬퍼 ---

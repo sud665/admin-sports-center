@@ -1,0 +1,8 @@
+[
+  { "id": "ms-001", "memberId": "mem-001", "type": "count", "name": "10회 수강권", "totalCount": 10, "remainingCount": 7, "startDate": "2026-03-01", "endDate": "2026-06-01", "price": 500000, "status": "active", "createdAt": "2026-03-01T00:00:00Z", "updatedAt": "2026-03-01T00:00:00Z" },
+  { "id": "ms-002", "memberId": "mem-002", "type": "period", "name": "1개월 무제한", "totalCount": null, "remainingCount": null, "startDate": "2026-03-10", "endDate": "2026-04-10", "price": 300000, "status": "active", "createdAt": "2026-03-10T00:00:00Z", "updatedAt": "2026-03-10T00:00:00Z" },
+  { "id": "ms-003", "memberId": "mem-003", "type": "count", "name": "30회 수강권", "totalCount": 30, "remainingCount": 2, "startDate": "2026-01-15", "endDate": "2026-07-15", "price": 1200000, "status": "active", "createdAt": "2026-01-15T00:00:00Z", "updatedAt": "2026-01-15T00:00:00Z" },
+  { "id": "ms-004", "memberId": "mem-004", "type": "count", "name": "10회 수강권", "totalCount": 10, "remainingCount": 0, "startDate": "2026-01-01", "endDate": "2026-04-01", "price": 500000, "status": "expired", "createdAt": "2026-01-01T00:00:00Z", "updatedAt": "2026-03-20T00:00:00Z" },
+  { "id": "ms-005", "memberId": "mem-005", "type": "period", "name": "3개월 무제한", "totalCount": null, "remainingCount": null, "startDate": "2026-02-01", "endDate": "2026-05-01", "price": 800000, "status": "active", "createdAt": "2026-02-01T00:00:00Z", "updatedAt": "2026-02-01T00:00:00Z" },
+  { "id": "ms-006", "memberId": "mem-001", "type": "period", "name": "1개월 무제한", "totalCount": null, "remainingCount": null, "startDate": "2026-01-01", "endDate": "2026-02-01", "price": 300000, "status": "expired", "createdAt": "2026-01-01T00:00:00Z", "updatedAt": "2026-02-01T00:00:00Z" }
+]
