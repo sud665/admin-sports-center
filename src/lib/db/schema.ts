@@ -71,3 +71,100 @@ export const availableSlots = pgTable("available_slots", {
   isRecurring: boolean("is_recurring").notNull().default(true),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+// ── Memberships ──────────────────────────────────────────────
+
+export const membershipStatusEnum = pgEnum("membership_status", [
+  "active",
+  "expired",
+  "paused",
+]);
+export const membershipTypeEnum = pgEnum("membership_type", [
+  "count",
+  "period",
+]);
+
+export const memberships = pgTable("memberships", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  memberId: uuid("member_id")
+    .notNull()
+    .references(() => members.id),
+  type: membershipTypeEnum("type").notNull(),
+  name: varchar("name", { length: 100 }).notNull(),
+  totalCount: integer("total_count"),
+  remainingCount: integer("remaining_count"),
+  startDate: date("start_date").notNull(),
+  endDate: date("end_date").notNull(),
+  price: integer("price").notNull().default(0),
+  status: membershipStatusEnum("status").notNull().default("active"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// ── Programs ─────────────────────────────────────────────────
+
+export const programCategoryEnum = pgEnum("program_category", [
+  "pilates",
+  "yoga",
+  "pt",
+  "group",
+]);
+
+export const programs = pgTable("programs", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: varchar("name", { length: 100 }).notNull(),
+  description: text("description"),
+  category: programCategoryEnum("category").notNull(),
+  duration: integer("duration").notNull().default(50),
+  capacity: integer("capacity").notNull().default(1),
+  color: varchar("color", { length: 7 }).default("#3772FF"),
+  instructorId: uuid("instructor_id").references(() => users.id),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// ── Attendances ──────────────────────────────────────────────
+
+export const attendanceMethodEnum = pgEnum("attendance_method", [
+  "manual",
+  "qr",
+]);
+
+export const attendances = pgTable("attendances", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  bookingId: uuid("booking_id")
+    .notNull()
+    .references(() => bookings.id),
+  memberId: uuid("member_id")
+    .notNull()
+    .references(() => members.id),
+  instructorId: uuid("instructor_id")
+    .notNull()
+    .references(() => users.id),
+  checkInTime: varchar("check_in_time", { length: 5 }).notNull(),
+  method: attendanceMethodEnum("method").notNull().default("manual"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// ── Notifications ────────────────────────────────────────────
+
+export const notificationTypeEnum = pgEnum("notification_type", [
+  "booking",
+  "membership_expiry",
+  "attendance",
+  "cancel",
+  "new_member",
+  "settlement",
+]);
+
+export const notifications = pgTable("notifications", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id),
+  type: notificationTypeEnum("type").notNull(),
+  title: varchar("title", { length: 200 }).notNull(),
+  message: text("message").notNull(),
+  isRead: boolean("is_read").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
