@@ -77,7 +77,7 @@ export async function PATCH(
     const { programs } = await import("@/lib/db/schema");
     const { eq } = await import("drizzle-orm");
 
-    const updateData: any = {};
+    const updateData: Record<string, unknown> = {};
     const allowedFields = ["name", "description", "category", "duration", "capacity", "color", "instructorId", "isActive"];
     for (const field of allowedFields) {
       if (body[field] !== undefined) {

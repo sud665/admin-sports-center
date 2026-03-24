@@ -40,9 +40,9 @@ export async function GET(req: NextRequest) {
     const { memberships, members } = await import("@/lib/db/schema");
     const { eq, and, desc } = await import("drizzle-orm");
 
-    const conditions: any[] = [];
+    const conditions: ReturnType<typeof eq>[] = [];
     if (status && status !== "all") {
-      conditions.push(eq(memberships.status, status as any));
+      conditions.push(eq(memberships.status, status as "active" | "expired" | "paused"));
     }
 
     const result = await db

@@ -30,9 +30,9 @@ export async function GET(req: NextRequest) {
     const { programs, users } = await import("@/lib/db/schema");
     const { eq, and, desc } = await import("drizzle-orm");
 
-    const conditions: any[] = [];
+    const conditions: ReturnType<typeof eq>[] = [];
     if (category && category !== "all") {
-      conditions.push(eq(programs.category, category as any));
+      conditions.push(eq(programs.category, category as "pilates" | "yoga" | "pt" | "group"));
     }
 
     const result = await db

@@ -20,7 +20,7 @@ export async function PATCH(
     const { memberships } = await import("@/lib/db/schema");
     const { eq } = await import("drizzle-orm");
 
-    const updateData: any = { updatedAt: new Date() };
+    const updateData: Record<string, unknown> = { updatedAt: new Date() };
     if (status !== undefined) updateData.status = status;
     if (remainingCount !== undefined) updateData.remainingCount = remainingCount;
 
