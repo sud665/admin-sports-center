@@ -8,14 +8,16 @@ interface AuthUser {
   id: string;
   email: string;
   name: string;
-  role: "admin" | "instructor";
+  role: "admin" | "instructor" | "member";
   color?: string | null;
+  memberId?: string | null; // For member role
 }
 
 interface AuthState {
   user: AuthUser | null;
   isLoading: boolean;
   isAdmin: boolean;
+  isMember: boolean;
 }
 
 export function useAuth(): AuthState & {
@@ -37,6 +39,7 @@ export function useAuth(): AuthState & {
           name: profile.name ?? supabaseUser.user_metadata?.full_name ?? supabaseUser.email?.split("@")[0] ?? "사용자",
           role: profile.role ?? "admin",
           color: profile.color ?? null,
+          memberId: profile.memberId ?? null,
         });
       } else {
         // User exists in Supabase Auth but not in our DB yet (or mock mode)
@@ -97,6 +100,7 @@ export function useAuth(): AuthState & {
     user,
     isLoading,
     isAdmin: user?.role === "admin",
+    isMember: user?.role === "member",
     signOut,
   };
 }

@@ -1,6 +1,8 @@
 [
   {
     "id": "mem-001",
+    "authId": null,
+    "email": null,
     "name": "박지수",
     "phone": "010-1234-5678",
     "instructorId": "inst-001",
@@ -11,6 +13,8 @@
   },
   {
     "id": "mem-002",
+    "authId": null,
+    "email": null,
     "name": "최민호",
     "phone": "010-2345-6789",
     "instructorId": "inst-001",
@@ -21,6 +25,8 @@
   },
   {
     "id": "mem-003",
+    "authId": null,
+    "email": null,
     "name": "정서연",
     "phone": "010-3456-7890",
     "instructorId": "inst-001",
@@ -31,6 +37,8 @@
   },
   {
     "id": "mem-004",
+    "authId": null,
+    "email": null,
     "name": "한유진",
     "phone": "010-4567-8901",
     "instructorId": "inst-002",
@@ -41,6 +49,8 @@
   },
   {
     "id": "mem-005",
+    "authId": null,
+    "email": null,
     "name": "오승현",
     "phone": "010-5678-9012",
     "instructorId": "inst-002",
@@ -51,6 +61,8 @@
   },
   {
     "id": "mem-006",
+    "authId": null,
+    "email": null,
     "name": "김도윤",
     "phone": "010-6789-0123",
     "instructorId": "inst-002",

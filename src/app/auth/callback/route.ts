@@ -16,24 +16,89 @@ export async function GET(request: Request) {
 
       if (!isMockMode()) {
         const { db } = await import("@/lib/db");
-        const { users } = await import("@/lib/db/schema");
+        const { users, members } = await import("@/lib/db/schema");
         const { eq } = await import("drizzle-orm");
 
+        // Check if user exists in users table (admin/instructor)
         const existing = await db.select().from(users).where(eq(users.id, data.user.id));
 
         if (existing.length === 0) {
-          // First time OAuth login - create user in our DB
-          await db.insert(users).values({
-            id: data.user.id,
-            email: data.user.email ?? "",
-            passwordHash: "", // OAuth users don't have passwords
-            name: data.user.user_metadata?.full_name ?? data.user.user_metadata?.name ?? data.user.email?.split("@")[0] ?? "사용자",
-            role: "admin", // Default role for new signups
-            isActive: true,
-          });
+          // Not an admin/instructor — check members table by email
+          const userEmail = data.user.email ?? "";
+          let redirectTo = next;
+
+          if (userEmail) {
+            const existingMembers = await db
+              .select()
+              .from(members)
+              .where(eq(members.email, userEmail));
+
+            if (existingMembers.length > 0) {
+              // Found existing member by email — link authId
+              await db
+                .update(members)
+                .set({ authId: data.user.id })
+                .where(eq(members.id, existingMembers[0].id));
+              redirectTo = "/m";
+            } else {
+              // Check if member already linked by authId
+              const linkedMembers = await db
+                .select()
+                .from(members)
+                .where(eq(members.authId, data.user.id));
+
+              if (linkedMembers.length > 0) {
+                redirectTo = "/m";
+              } else {
+                // New user — create as member
+                await db.insert(members).values({
+                  name:
+                    data.user.user_metadata?.full_name ??
+                    data.user.email?.split("@")[0] ??
+                    "회원",
+                  phone: data.user.user_metadata?.phone ?? null,
+                  email: userEmail,
+                  authId: data.user.id,
+                  isActive: true,
+                });
+                redirectTo = "/m";
+              }
+            }
+          } else {
+            // No email — create member without email
+            const linkedMembers = await db
+              .select()
+              .from(members)
+              .where(eq(members.authId, data.user.id));
+
+            if (linkedMembers.length === 0) {
+              await db.insert(members).values({
+                name:
+                  data.user.user_metadata?.full_name ??
+                  "회원",
+                phone: data.user.user_metadata?.phone ?? null,
+                authId: data.user.id,
+                isActive: true,
+              });
+            }
+            redirectTo = "/m";
+          }
+
+          // Redirect member to member app
+          const forwardedHost = request.headers.get("x-forwarded-host");
+          const isLocalEnv = process.env.NODE_ENV === "development";
+
+          if (isLocalEnv) {
+            return NextResponse.redirect(`${origin}${redirectTo}`);
+          } else if (forwardedHost) {
+            return NextResponse.redirect(`https://${forwardedHost}${redirectTo}`);
+          } else {
+            return NextResponse.redirect(`${origin}${redirectTo}`);
+          }
         }
       }
 
+      // Admin/instructor — redirect to dashboard
       const forwardedHost = request.headers.get("x-forwarded-host");
       const isLocalEnv = process.env.NODE_ENV === "development";
 

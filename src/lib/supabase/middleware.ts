@@ -34,14 +34,21 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   // Protected routes - redirect to login if not authenticated
-  const protectedPaths = ["/dashboard", "/calendar", "/instructors", "/members", "/settlements", "/my-slots", "/my-settlements", "/settings", "/memberships", "/programs", "/attendance", "/analytics"];
-  const isProtectedPath = protectedPaths.some(path =>
+  const protectedPaths = ["/dashboard", "/calendar", "/instructors", "/members", "/settlements", "/my-slots", "/my-settlements", "/settings", "/memberships", "/programs", "/attendance", "/analytics", "/m"];
+  // Member login page is public (not protected)
+  const memberAuthPaths = ["/m/login"];
+  const isMemberAuthPath = memberAuthPaths.some(path =>
     request.nextUrl.pathname.startsWith(path)
   );
 
+  const isProtectedPath = protectedPaths.some(path =>
+    request.nextUrl.pathname.startsWith(path)
+  ) && !isMemberAuthPath;
+
   if (isProtectedPath && !user) {
+    // Redirect member routes to member login, admin routes to admin login
     const url = request.nextUrl.clone();
-    url.pathname = "/login";
+    url.pathname = request.nextUrl.pathname.startsWith("/m") ? "/m/login" : "/login";
     return NextResponse.redirect(url);
   }
 
