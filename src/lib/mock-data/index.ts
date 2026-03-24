@@ -4,6 +4,7 @@ import bookingsTemplate from "./bookings.json";
 import slotsData from "./slots.json";
 import membershipsData from "./memberships.json";
 import attendancesData from "./attendances.json";
+import programsData from "./programs.json";
 
 // --- 유틸 ---
 function formatDate(d: Date): string {
@@ -222,6 +223,17 @@ export function getMockTodayAttendance() {
       status: b.status as "booked" | "completed" | "cancelled",
       isCheckedIn: !!att,
       checkInTime: att?.checkInTime ?? null,
+    };
+  });
+}
+
+// --- Mock 프로그램 (강사 이름 join) ---
+export function getMockPrograms() {
+  return programsData.map((p) => {
+    const instructor = mockUsers.find((u) => u.id === p.instructorId);
+    return {
+      ...p,
+      instructorName: instructor?.name ?? null,
     };
   });
 }

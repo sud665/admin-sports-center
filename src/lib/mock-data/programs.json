@@ -1,0 +1,8 @@
+[
+  { "id": "prog-001", "name": "필라테스 기초", "description": "초보자를 위한 필라테스 기본 동작과 호흡법", "category": "pilates", "duration": 50, "capacity": 6, "color": "#3772FF", "instructorId": "inst-001", "isActive": true, "createdAt": "2026-01-01T00:00:00Z" },
+  { "id": "prog-002", "name": "필라테스 중급", "description": "리포머와 캐딜락을 활용한 중급 프로그램", "category": "pilates", "duration": 50, "capacity": 4, "color": "#DF2935", "instructorId": "inst-001", "isActive": true, "createdAt": "2026-01-01T00:00:00Z" },
+  { "id": "prog-003", "name": "빈야사 요가", "description": "호흡과 움직임을 연결하는 플로우 요가", "category": "yoga", "duration": 60, "capacity": 10, "color": "#FDCA40", "instructorId": "inst-002", "isActive": true, "createdAt": "2026-01-15T00:00:00Z" },
+  { "id": "prog-004", "name": "하타 요가", "description": "정적인 자세와 깊은 호흡에 집중하는 기본 요가", "category": "yoga", "duration": 60, "capacity": 12, "color": "#10B981", "instructorId": "inst-002", "isActive": true, "createdAt": "2026-01-15T00:00:00Z" },
+  { "id": "prog-005", "name": "1:1 PT", "description": "개인 맞춤형 퍼스널 트레이닝", "category": "pt", "duration": 50, "capacity": 1, "color": "#8B5CF6", "instructorId": null, "isActive": true, "createdAt": "2026-02-01T00:00:00Z" },
+  { "id": "prog-006", "name": "그룹 서킷", "description": "그룹으로 진행하는 전신 서킷 트레이닝", "category": "group", "duration": 45, "capacity": 15, "color": "#F97316", "instructorId": null, "isActive": true, "createdAt": "2026-02-01T00:00:00Z" }
+]
