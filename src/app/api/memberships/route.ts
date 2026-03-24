@@ -26,10 +26,46 @@ export async function GET(req: NextRequest) {
 
   const { session, error } = await getAuthSession();
   if (error) return error;
-
-  // Real DB implementation placeholder
   void session;
-  return NextResponse.json([]);
+
+  const { searchParams } = new URL(req.url);
+  const status = searchParams.get("status");
+
+  try {
+    const { db } = await import("@/lib/db");
+    const { memberships, members } = await import("@/lib/db/schema");
+    const { eq, and, desc } = await import("drizzle-orm");
+
+    const conditions: any[] = [];
+    if (status && status !== "all") {
+      conditions.push(eq(memberships.status, status as any));
+    }
+
+    const result = await db
+      .select({
+        id: memberships.id,
+        memberId: memberships.memberId,
+        memberName: members.name,
+        type: memberships.type,
+        name: memberships.name,
+        totalCount: memberships.totalCount,
+        remainingCount: memberships.remainingCount,
+        startDate: memberships.startDate,
+        endDate: memberships.endDate,
+        price: memberships.price,
+        status: memberships.status,
+        createdAt: memberships.createdAt,
+      })
+      .from(memberships)
+      .leftJoin(members, eq(memberships.memberId, members.id))
+      .where(conditions.length > 0 ? and(...conditions) : undefined)
+      .orderBy(desc(memberships.createdAt));
+
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Error fetching memberships:", error);
+    return NextResponse.json({ error: "서버 오류가 발생했습니다." }, { status: 500 });
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -51,7 +87,25 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Real DB insert placeholder
-  void totalCount;
-  return NextResponse.json({ message: "수강권이 발급되었습니다" }, { status: 201 });
+  try {
+    const { db } = await import("@/lib/db");
+    const { memberships } = await import("@/lib/db/schema");
+
+    const [newMembership] = await db.insert(memberships).values({
+      memberId,
+      type,
+      name,
+      totalCount: type === "count" ? totalCount : null,
+      remainingCount: type === "count" ? totalCount : null,
+      startDate,
+      endDate,
+      price,
+      status: "active",
+    }).returning();
+
+    return NextResponse.json(newMembership, { status: 201 });
+  } catch (error) {
+    console.error("Error creating membership:", error);
+    return NextResponse.json({ error: "서버 오류가 발생했습니다." }, { status: 500 });
+  }
 }
