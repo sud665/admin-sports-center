@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthSession } from "@/lib/api-utils";
 import { isMockMode, getMockTodayAttendance, getMockAttendances } from "@/lib/mock-data";
-
-// In-memory store for mock check-ins during the session
-const mockCheckIns = new Map<string, { checkInTime: string; method: string }>();
+import { mockCheckIns } from "@/lib/mock-data/mock-checkins";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(_req: NextRequest) {
@@ -151,5 +149,3 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// Export for use in delete route
-export { mockCheckIns };

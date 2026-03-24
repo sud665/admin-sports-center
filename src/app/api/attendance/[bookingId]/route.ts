@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthSession } from "@/lib/api-utils";
 import { isMockMode } from "@/lib/mock-data";
-import { mockCheckIns } from "../route";
+import { mockCheckIns } from "@/lib/mock-data/mock-checkins";
 
 export async function DELETE(
   _req: NextRequest,
