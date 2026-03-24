@@ -1,0 +1,24 @@
+{
+  "name": "CenterOn - 센터 운영을 켜다",
+  "short_name": "CenterOn",
+  "description": "필라테스 · 요가 · 헬스 센터 통합 관리",
+  "start_url": "/m",
+  "display": "standalone",
+  "background_color": "#080708",
+  "theme_color": "#3772FF",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
