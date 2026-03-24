@@ -90,6 +90,34 @@ export async function POST(req: NextRequest) {
 
   const endTime = addMinutesToTime(startTime, 50);
 
+  // Check member has valid membership
+  const { memberships } = await import("@/lib/db/schema");
+  const { or, gt } = await import("drizzle-orm");
+
+  const validMemberships = await db
+    .select()
+    .from(memberships)
+    .where(
+      and(
+        eq(memberships.memberId, memberId),
+        eq(memberships.status, "active"),
+        lte(memberships.startDate, date),
+        gte(memberships.endDate, date),
+        or(
+          eq(memberships.type, "period"), // period type: no count check
+          gt(memberships.remainingCount, 0) // count type: must have remaining
+        )
+      )
+    )
+    .limit(1);
+
+  if (validMemberships.length === 0) {
+    return NextResponse.json(
+      { error: "유효한 수강권이 없습니다. 수강권을 먼저 발급해주세요." },
+      { status: 400 }
+    );
+  }
+
   // 동시간대 6명 제한 체크
   const [countResult] = await db
     .select({ count: sql<number>`cast(count(*) as int)` })
@@ -122,6 +150,20 @@ export async function POST(req: NextRequest) {
       status: "booked",
     })
     .returning();
+
+  // If count type, decrement remaining count
+  const membership = validMemberships[0];
+  if (membership.type === "count" && membership.remainingCount !== null) {
+    await db
+      .update(memberships)
+      .set({
+        remainingCount: membership.remainingCount - 1,
+        updatedAt: new Date(),
+        // Auto-expire if count reaches 0
+        ...(membership.remainingCount - 1 === 0 ? { status: "expired" as const } : {}),
+      })
+      .where(eq(memberships.id, membership.id));
+  }
 
   return NextResponse.json(booking, { status: 201 });
 }

@@ -4,6 +4,7 @@ import { bookings, users, members } from "@/lib/db/schema";
 import { and, eq, gte, lte, ne, sql } from "drizzle-orm";
 import { getAuthSession } from "@/lib/api-utils";
 import { isMockMode, getMockDashboard } from "@/lib/mock-data";
+import { expireMemberships } from "@/lib/membership-utils";
 
 export async function GET() {
   if (isMockMode()) {
@@ -16,6 +17,8 @@ export async function GET() {
 
   const { session, error } = await getAuthSession();
   if (error) return error;
+
+  await expireMemberships(); // Check for expired memberships
 
   const today = new Date().toLocaleDateString("sv-SE");
   const dayOfWeek = new Date().getDay();

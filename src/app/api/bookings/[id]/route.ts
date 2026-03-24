@@ -113,5 +113,34 @@ export async function DELETE(
     );
   }
 
+  // Refund membership if it was a count-based membership
+  const { memberships } = await import("@/lib/db/schema");
+  const { gte, lte } = await import("drizzle-orm");
+
+  // Find the member's count membership that covers this booking date
+  const [membership] = await db
+    .select()
+    .from(memberships)
+    .where(
+      and(
+        eq(memberships.memberId, updated.memberId),
+        eq(memberships.type, "count"),
+        lte(memberships.startDate, updated.date),
+        gte(memberships.endDate, updated.date)
+      )
+    )
+    .limit(1);
+
+  if (membership && membership.remainingCount !== null) {
+    await db
+      .update(memberships)
+      .set({
+        remainingCount: membership.remainingCount + 1,
+        status: "active", // Reactivate if was expired due to 0 count
+        updatedAt: new Date(),
+      })
+      .where(eq(memberships.id, membership.id));
+  }
+
   return NextResponse.json({ message: "예약이 취소되었습니다" });
 }

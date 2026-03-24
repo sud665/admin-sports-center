@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthSession, requireAdmin } from "@/lib/api-utils";
 import { isMockMode, getMockMemberships, MOCK_DEMO_RESPONSE } from "@/lib/mock-data";
+import { expireMemberships } from "@/lib/membership-utils";
 
 export async function GET(req: NextRequest) {
   if (isMockMode()) {
@@ -27,6 +28,8 @@ export async function GET(req: NextRequest) {
   const { session, error } = await getAuthSession();
   if (error) return error;
   void session;
+
+  await expireMemberships(); // Check for expired memberships
 
   const { searchParams } = new URL(req.url);
   const status = searchParams.get("status");
