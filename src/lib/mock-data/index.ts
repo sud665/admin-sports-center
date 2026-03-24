@@ -3,6 +3,7 @@ import membersData from "./members.json";
 import bookingsTemplate from "./bookings.json";
 import slotsData from "./slots.json";
 import membershipsData from "./memberships.json";
+import attendancesData from "./attendances.json";
 
 // --- 유틸 ---
 function formatDate(d: Date): string {
@@ -193,6 +194,34 @@ export function getMockMemberships() {
     return {
       ...ms,
       memberName: member?.name ?? "알 수 없음",
+    };
+  });
+}
+
+// --- Mock 출석 ---
+export function getMockAttendances() {
+  return attendancesData;
+}
+
+export function getMockTodayAttendance() {
+  const today = getToday();
+  const allBookings = getMockBookings();
+  const todayBookings = allBookings.filter((b) => b.date === today);
+  const attendances = getMockAttendances();
+
+  return todayBookings.map((b) => {
+    const att = attendances.find((a) => a.bookingId === b.id);
+    return {
+      bookingId: b.id,
+      memberId: b.memberId,
+      memberName: b.memberName ?? "알 수 없음",
+      instructorName: b.instructorName ?? "알 수 없음",
+      instructorColor: b.instructorColor ?? "#ccc",
+      startTime: b.startTime,
+      endTime: b.endTime,
+      status: b.status as "booked" | "completed" | "cancelled",
+      isCheckedIn: !!att,
+      checkInTime: att?.checkInTime ?? null,
     };
   });
 }

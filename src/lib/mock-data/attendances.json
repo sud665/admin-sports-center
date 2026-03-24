@@ -1,0 +1,4 @@
+[
+  { "id": "att-001", "bookingId": "book-001", "memberId": "mem-001", "instructorId": "inst-001", "checkInTime": "09:55", "method": "manual", "createdAt": "2026-03-24T09:55:00Z" },
+  { "id": "att-002", "bookingId": "book-003", "memberId": "mem-004", "instructorId": "inst-002", "checkInTime": "13:58", "method": "manual", "createdAt": "2026-03-24T13:58:00Z" }
+]
