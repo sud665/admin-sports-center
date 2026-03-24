@@ -136,6 +136,7 @@ export default function LoginPage() {
                 name="email"
                 type="email"
                 required
+                aria-label="이메일"
                 placeholder="admin@example.com"
                 className="w-full rounded-xl border border-[#E6E8E6] bg-white px-4 py-3 text-sm text-[#080708] placeholder:text-[#080708]/30 outline-none transition-all focus:border-[#3772FF] focus:ring-2 focus:ring-[#3772FF]/20"
               />
@@ -153,13 +154,14 @@ export default function LoginPage() {
                 name="password"
                 type="password"
                 required
+                aria-label="비밀번호"
                 placeholder="••••••••"
                 className="w-full rounded-xl border border-[#E6E8E6] bg-white px-4 py-3 text-sm text-[#080708] placeholder:text-[#080708]/30 outline-none transition-all focus:border-[#3772FF] focus:ring-2 focus:ring-[#3772FF]/20"
               />
             </div>
 
             {error && (
-              <p className="text-sm text-[#DF2935] font-medium">{error}</p>
+              <p role="alert" className="text-sm text-[#DF2935] font-medium">{error}</p>
             )}
 
             <button

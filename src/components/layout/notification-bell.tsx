@@ -88,7 +88,7 @@ export function NotificationBell() {
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#DF2935] px-1 text-[10px] font-bold text-white animate-pulse">
+          <span aria-live="polite" className="absolute -top-0.5 -right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#DF2935] px-1 text-[10px] font-bold text-white animate-pulse">
             {unreadCount > 99 ? "99+" : unreadCount}
           </span>
         )}
@@ -96,7 +96,7 @@ export function NotificationBell() {
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-[360px] rounded-lg border bg-background shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+        <div role="menu" className="absolute right-0 top-full mt-2 w-[360px] rounded-lg border bg-background shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
           {/* Header */}
           <div className="flex items-center justify-between border-b px-4 py-3">
             <h3 className="text-sm font-semibold">알림</h3>

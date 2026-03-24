@@ -45,12 +45,13 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const nav = user?.role === "admin" ? adminNav : instructorNav;
 
   return (
-    <nav className="space-y-1 px-3">
+    <nav role="navigation" aria-label="주 네비게이션" className="space-y-1 px-3">
       {nav.map((item) => (
         <Link
           key={item.href}
           href={item.href}
           onClick={onNavigate}
+          aria-current={pathname.startsWith(item.href) ? "page" : undefined}
           className={cn(
             "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
             pathname.startsWith(item.href)

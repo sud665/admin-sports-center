@@ -2,9 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { isMockMode } from "@/lib/mock-data";
 import { createClient } from "@/lib/supabase/server";
 import { validateBody, registerSchema } from "@/lib/validations";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+    const { limited } = checkRateLimit(`register:${ip}`, 5, 15 * 60 * 1000);
+    if (limited) {
+      return NextResponse.json(
+        { error: "너무 많은 요청입니다. 15분 후 다시 시도해주세요." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
     const validation = validateBody(registerSchema, body);
     if (!validation.success) {
