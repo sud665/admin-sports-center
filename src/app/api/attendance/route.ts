@@ -5,7 +5,8 @@ import { isMockMode, getMockTodayAttendance, getMockAttendances } from "@/lib/mo
 // In-memory store for mock check-ins during the session
 const mockCheckIns = new Map<string, { checkInTime: string; method: string }>();
 
-export async function GET(req: NextRequest) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function GET(_req: NextRequest) {
   const { session, error } = await getAuthSession();
   if (error) return error;
 
@@ -37,7 +38,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const { session, error } = await getAuthSession();
+  const { error } = await getAuthSession();
   if (error) return error;
 
   const body = await req.json();

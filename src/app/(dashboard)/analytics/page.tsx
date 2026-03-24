@@ -91,14 +91,18 @@ export default function AnalyticsPage() {
   );
 
   /* ── donut gradient ────────────────────────────── */
-  let cumulativePercent = 0;
   const conicStops = programs
-    .map((p) => {
-      const start = cumulativePercent;
-      cumulativePercent += p.percentage;
-      return `${p.color} ${start}% ${cumulativePercent}%`;
-    })
-    .join(", ");
+    .reduce<{ stops: string[]; cum: number }>(
+      (acc, p) => {
+        const start = acc.cum;
+        const end = acc.cum + p.percentage;
+        acc.stops.push(`${p.color} ${start}% ${end}%`);
+        acc.cum = end;
+        return acc;
+      },
+      { stops: [], cum: 0 }
+    )
+    .stops.join(", ");
 
   const totalBookings = programs.reduce((s, p) => s + p.bookings, 0);
 

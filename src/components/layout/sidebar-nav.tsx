@@ -12,6 +12,10 @@ import {
   Receipt,
   Clock,
   Settings,
+  Ticket,
+  GraduationCap,
+  ClipboardCheck,
+  BarChart3,
 } from "lucide-react";
 
 const adminNav = [
@@ -19,6 +23,10 @@ const adminNav = [
   { href: "/calendar", label: "캘린더", icon: Calendar },
   { href: "/instructors", label: "강사 관리", icon: UserCog },
   { href: "/members", label: "회원 관리", icon: Users },
+  { href: "/memberships", label: "수강권 관리", icon: Ticket },
+  { href: "/programs", label: "수업 프로그램", icon: GraduationCap },
+  { href: "/attendance", label: "출석 체크", icon: ClipboardCheck },
+  { href: "/analytics", label: "매출 · 통계", icon: BarChart3 },
   { href: "/settlements", label: "정산 관리", icon: Receipt },
   { href: "/settings", label: "설정", icon: Settings },
 ];
@@ -28,6 +36,7 @@ const instructorNav = [
   { href: "/calendar", label: "내 캘린더", icon: Calendar },
   { href: "/my-slots", label: "수업 가능 시간", icon: Clock },
   { href: "/my-settlements", label: "내 정산", icon: Receipt },
+  { href: "/attendance", label: "출석 체크", icon: ClipboardCheck },
 ];
 
 export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {

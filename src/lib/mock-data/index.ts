@@ -66,7 +66,8 @@ export const mockSlots = slotsData;
 export function getMockInstructors() {
   return mockUsers
     .filter((u) => u.role === "instructor")
-    .map(({ passwordHash, ...rest }) => rest);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .map(({ passwordHash: _pw, ...rest }) => rest);
 }
 
 // --- Mock 대시보드 ---
