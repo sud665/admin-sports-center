@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthSession, requireAdmin } from "@/lib/api-utils";
 import { isMockMode, getMockPrograms, MOCK_DEMO_RESPONSE } from "@/lib/mock-data";
+import { validateBody, createProgramSchema } from "@/lib/validations";
 
 export async function GET(req: NextRequest) {
   if (isMockMode()) {
@@ -70,14 +71,11 @@ export async function POST(req: NextRequest) {
   if (adminError) return adminError;
 
   const body = await req.json();
-  const { name, description, category, duration, capacity, color, instructorId } = body;
-
-  if (!name || !category || !duration || !capacity) {
-    return NextResponse.json(
-      { error: "필수 항목을 입력해주세요" },
-      { status: 400 }
-    );
+  const validation = validateBody(createProgramSchema, body);
+  if (!validation.success) {
+    return NextResponse.json({ error: validation.error }, { status: 400 });
   }
+  const { name, description, category, duration, capacity, color, instructorId } = validation.data;
 
   try {
     const { db } = await import("@/lib/db");

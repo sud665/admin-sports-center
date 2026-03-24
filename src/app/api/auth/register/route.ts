@@ -1,17 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isMockMode } from "@/lib/mock-data";
 import { createClient } from "@/lib/supabase/server";
+import { validateBody, registerSchema } from "@/lib/validations";
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, password, centerName, phone } = await req.json();
-
-    if (!name || !email || !password) {
-      return NextResponse.json({ error: "필수 정보를 입력해주세요." }, { status: 400 });
+    const body = await req.json();
+    const validation = validateBody(registerSchema, body);
+    if (!validation.success) {
+      return NextResponse.json({ error: validation.error }, { status: 400 });
     }
-    if (password.length < 6) {
-      return NextResponse.json({ error: "비밀번호는 6자 이상이어야 합니다." }, { status: 400 });
-    }
+    const { name, email, password, centerName, phone } = validation.data;
 
     if (isMockMode()) {
       return NextResponse.json({

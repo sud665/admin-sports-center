@@ -34,8 +34,16 @@ export default function RegisterPage() {
       setError("모든 항목을 입력해주세요.");
       return;
     }
-    if (password.length < 6) {
-      setError("비밀번호는 6자 이상이어야 합니다.");
+    if (password.length < 8) {
+      setError("비밀번호는 8자 이상이어야 합니다.");
+      return;
+    }
+    if (!/[A-Za-z]/.test(password)) {
+      setError("비밀번호에 영문을 포함해야 합니다.");
+      return;
+    }
+    if (!/[0-9]/.test(password)) {
+      setError("비밀번호에 숫자를 포함해야 합니다.");
       return;
     }
     if (password !== confirmPassword) {
@@ -245,7 +253,7 @@ export default function RegisterPage() {
                 id="password"
                 type="password"
                 required
-                placeholder="6자 이상 입력하세요"
+                placeholder="8자 이상, 영문+숫자 포함"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className={inputClassName}

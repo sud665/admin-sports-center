@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAuthSession, requireAdmin } from "@/lib/api-utils";
 import { isMockMode, getMockMemberships, MOCK_DEMO_RESPONSE } from "@/lib/mock-data";
 import { expireMemberships } from "@/lib/membership-utils";
+import { validateBody, createMembershipSchema } from "@/lib/validations";
 
 export async function GET(req: NextRequest) {
   if (isMockMode()) {
@@ -81,14 +82,11 @@ export async function POST(req: NextRequest) {
   if (adminError) return adminError;
 
   const body = await req.json();
-  const { memberId, type, name, totalCount, startDate, endDate, price } = body;
-
-  if (!memberId || !type || !name || !startDate || !endDate || price == null) {
-    return NextResponse.json(
-      { error: "필수 항목을 입력해주세요" },
-      { status: 400 }
-    );
+  const validation = validateBody(createMembershipSchema, body);
+  if (!validation.success) {
+    return NextResponse.json({ error: validation.error }, { status: 400 });
   }
+  const { memberId, type, name, totalCount, startDate, endDate, price } = validation.data;
 
   try {
     const { db } = await import("@/lib/db");
