@@ -25,6 +25,19 @@ export async function DELETE(
     );
   }
 
-  // Real DB implementation would go here
-  return NextResponse.json({ success: true, message: "출석이 취소되었습니다" });
+  // Real DB mode
+  try {
+    const { db } = await import("@/lib/db");
+    const { attendances } = await import("@/lib/db/schema");
+    const { eq } = await import("drizzle-orm");
+
+    await db.delete(attendances).where(eq(attendances.bookingId, bookingId));
+    return NextResponse.json({ success: true, message: "출석이 취소되었습니다" });
+  } catch (err) {
+    console.error("출석 취소 실패:", err);
+    return NextResponse.json(
+      { error: "출석 취소 중 오류가 발생했습니다." },
+      { status: 500 }
+    );
+  }
 }
