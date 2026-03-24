@@ -8,7 +8,7 @@ const withPWA = withPWAInit({
 } as Parameters<typeof withPWAInit>[0]);
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  turbopack: {},
   async headers() {
     return [
       {
