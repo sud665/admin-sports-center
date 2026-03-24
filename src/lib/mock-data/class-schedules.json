@@ -1,0 +1,10 @@
+[
+  { "id": "cs-001", "programId": "prog-001", "instructorId": "inst-001", "dayOfWeek": 1, "startTime": "10:00", "endTime": "10:50", "isActive": true, "createdAt": "2026-01-01T00:00:00Z" },
+  { "id": "cs-002", "programId": "prog-001", "instructorId": "inst-001", "dayOfWeek": 3, "startTime": "10:00", "endTime": "10:50", "isActive": true, "createdAt": "2026-01-01T00:00:00Z" },
+  { "id": "cs-003", "programId": "prog-001", "instructorId": "inst-001", "dayOfWeek": 5, "startTime": "10:00", "endTime": "10:50", "isActive": true, "createdAt": "2026-01-01T00:00:00Z" },
+  { "id": "cs-004", "programId": "prog-003", "instructorId": "inst-002", "dayOfWeek": 2, "startTime": "14:00", "endTime": "15:00", "isActive": true, "createdAt": "2026-01-15T00:00:00Z" },
+  { "id": "cs-005", "programId": "prog-003", "instructorId": "inst-002", "dayOfWeek": 4, "startTime": "14:00", "endTime": "15:00", "isActive": true, "createdAt": "2026-01-15T00:00:00Z" },
+  { "id": "cs-006", "programId": "prog-004", "instructorId": "inst-002", "dayOfWeek": 1, "startTime": "11:00", "endTime": "12:00", "isActive": true, "createdAt": "2026-01-15T00:00:00Z" },
+  { "id": "cs-007", "programId": "prog-005", "instructorId": "inst-001", "dayOfWeek": 2, "startTime": "16:00", "endTime": "16:50", "isActive": true, "createdAt": "2026-02-01T00:00:00Z" },
+  { "id": "cs-008", "programId": "prog-006", "instructorId": "inst-002", "dayOfWeek": 6, "startTime": "10:00", "endTime": "10:45", "isActive": true, "createdAt": "2026-02-01T00:00:00Z" }
+]

@@ -34,6 +34,8 @@ export const users = pgTable("users", {
 
 export const members = pgTable("members", {
   id: uuid("id").defaultRandom().primaryKey(),
+  authId: uuid("auth_id").unique(), // Supabase auth user ID, nullable for existing members
+  email: varchar("email", { length: 255 }),
   name: varchar("name", { length: 100 }).notNull(),
   phone: varchar("phone", { length: 20 }),
   instructorId: uuid("instructor_id").references(() => users.id),
@@ -54,6 +56,7 @@ export const bookings = pgTable("bookings", {
   date: date("date").notNull(),
   startTime: time("start_time").notNull(),
   endTime: time("end_time").notNull(),
+  programId: uuid("program_id").references(() => programs.id), // nullable, for group bookings
   price: integer("price").notNull(),
   status: bookingStatusEnum("status").notNull().default("booked"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -166,5 +169,18 @@ export const notifications = pgTable("notifications", {
   title: varchar("title", { length: 200 }).notNull(),
   message: text("message").notNull(),
   isRead: boolean("is_read").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// ── Class Schedules ─────────────────────────────────────────
+
+export const classSchedules = pgTable("class_schedules", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  programId: uuid("program_id").notNull().references(() => programs.id),
+  instructorId: uuid("instructor_id").notNull().references(() => users.id),
+  dayOfWeek: integer("day_of_week").notNull(), // 0=Sunday, 1=Monday...
+  startTime: varchar("start_time", { length: 5 }).notNull(), // "HH:mm"
+  endTime: varchar("end_time", { length: 5 }).notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });

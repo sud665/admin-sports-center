@@ -6,6 +6,7 @@ import membershipsData from "./memberships.json";
 import attendancesData from "./attendances.json";
 import programsData from "./programs.json";
 import notificationsData from "./notifications.json";
+import classSchedulesData from "./class-schedules.json";
 
 // --- 유틸 ---
 function formatDate(d: Date): string {
@@ -236,6 +237,40 @@ export function getMockPrograms() {
     return {
       ...p,
       instructorName: instructor?.name ?? null,
+    };
+  });
+}
+
+// --- Mock 그룹 수업 스케줄 (프로그램 + 강사 join) ---
+export function getMockClassSchedules(dayOfWeek?: number) {
+  let schedules = classSchedulesData.filter((cs) => cs.isActive);
+  if (dayOfWeek !== undefined) {
+    schedules = schedules.filter((cs) => cs.dayOfWeek === dayOfWeek);
+  }
+
+  return schedules.map((cs) => {
+    const program = programsData.find((p) => p.id === cs.programId);
+    const instructor = mockUsers.find((u) => u.id === cs.instructorId);
+    const [startH, startM] = cs.startTime.split(":").map(Number);
+    const [endH, endM] = cs.endTime.split(":").map(Number);
+    const duration = (endH * 60 + endM) - (startH * 60 + startM);
+
+    return {
+      id: cs.id,
+      programId: cs.programId,
+      programName: program?.name ?? "알 수 없음",
+      programColor: program?.color ?? "#3772FF",
+      category: program?.category ?? "group",
+      instructorId: cs.instructorId,
+      instructorName: instructor?.name ?? "알 수 없음",
+      dayOfWeek: cs.dayOfWeek,
+      startTime: cs.startTime,
+      endTime: cs.endTime,
+      duration,
+      capacity: program?.capacity ?? 1,
+      enrolled: Math.floor(Math.random() * (program?.capacity ?? 1)),
+      isActive: cs.isActive,
+      createdAt: cs.createdAt,
     };
   });
 }
