@@ -20,8 +20,10 @@ export async function GET(req: NextRequest) {
       if (startDate) filteredBookings = filteredBookings.filter((b) => b.date >= startDate);
       if (endDate) filteredBookings = filteredBookings.filter((b) => b.date <= endDate);
       if (instructorId) filteredBookings = filteredBookings.filter((b) => b.instructorId === instructorId);
-      if (session!.user.role !== "admin") {
+      if (session!.user.role === "instructor") {
         filteredBookings = filteredBookings.filter((b) => b.instructorId === session!.user.id);
+      } else if (session!.user.role === "member" && session!.user.memberId) {
+        filteredBookings = filteredBookings.filter((b) => b.memberId === session!.user.memberId);
       }
       return NextResponse.json(filteredBookings);
     }
@@ -43,6 +45,8 @@ export async function GET(req: NextRequest) {
     // 강사는 본인 예약만
     if (session!.user.role === "instructor") {
       conditions.push(eq(bookings.instructorId, session!.user.id));
+    } else if (session!.user.role === "member" && session!.user.memberId) {
+      conditions.push(eq(bookings.memberId, session!.user.memberId));
     }
 
     const result = await db

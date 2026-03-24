@@ -215,6 +215,8 @@ export default function LoginPage() {
           {/* Test account hint */}
           <p className="mt-8 text-center text-xs text-[#080708]/40">
             테스트 계정: admin@test.com / 1234
+            <br />
+            회원: member@test.com / 1234
           </p>
         </div>
       </div>

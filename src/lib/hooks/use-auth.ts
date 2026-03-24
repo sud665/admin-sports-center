@@ -37,7 +37,7 @@ export function useAuth(): AuthState & {
           id: supabaseUser.id,
           email: supabaseUser.email ?? "",
           name: profile.name ?? supabaseUser.user_metadata?.full_name ?? supabaseUser.email?.split("@")[0] ?? "사용자",
-          role: profile.role ?? "admin",
+          role: profile.role ?? "member", // Default to member, not admin
           color: profile.color ?? null,
           memberId: profile.memberId ?? null,
         });
@@ -47,7 +47,7 @@ export function useAuth(): AuthState & {
           id: supabaseUser.id,
           email: supabaseUser.email ?? "",
           name: supabaseUser.user_metadata?.full_name ?? supabaseUser.email?.split("@")[0] ?? "사용자",
-          role: "admin",
+          role: "member", // Default to member, not admin
           color: null,
         });
       }
@@ -56,7 +56,7 @@ export function useAuth(): AuthState & {
         id: supabaseUser.id,
         email: supabaseUser.email ?? "",
         name: supabaseUser.user_metadata?.full_name ?? supabaseUser.email?.split("@")[0] ?? "사용자",
-        role: "admin",
+        role: "member", // Default to member, not admin
         color: null,
       });
     }

@@ -15,8 +15,8 @@ export async function GET(req: NextRequest) {
     let memberships = getMockMemberships();
 
     // 강사는 본인 담당 회원의 수강권만
-    if (session!.user.role !== "admin") {
-      // 강사 필터링은 회원 데이터 join이 필요하지만 mock에서는 전체 반환
+    if (session!.user.role === "member" && session!.user.memberId) {
+      memberships = memberships.filter((ms) => ms.memberId === session!.user.memberId);
     }
 
     if (status) {
@@ -43,6 +43,9 @@ export async function GET(req: NextRequest) {
     const conditions: ReturnType<typeof eq>[] = [];
     if (status && status !== "all") {
       conditions.push(eq(memberships.status, status as "active" | "expired" | "paused"));
+    }
+    if (session!.user.role === "member" && session!.user.memberId) {
+      conditions.push(eq(memberships.memberId, session!.user.memberId));
     }
 
     const result = await db

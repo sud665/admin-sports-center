@@ -52,16 +52,36 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Auth routes - redirect to dashboard if already authenticated
-  const authPaths = ["/login", "/register"];
-  const isAuthPath = authPaths.some(path =>
-    request.nextUrl.pathname.startsWith(path)
-  );
+  // If user is authenticated, check role for correct app routing
+  if (user) {
+    // Admin routes: only admin/instructor should access
+    const adminPaths = ["/dashboard", "/calendar", "/instructors", "/members", "/settlements", "/my-slots", "/my-settlements", "/settings", "/memberships", "/programs", "/attendance", "/analytics"];
+    const isAdminPath = adminPaths.some(path => request.nextUrl.pathname.startsWith(path));
+    void isAdminPath;
 
-  if (isAuthPath && user) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/dashboard";
-    return NextResponse.redirect(url);
+    // Member routes: /m/*
+    const isMemberPath = request.nextUrl.pathname.startsWith("/m") && !isMemberAuthPath;
+    void isMemberPath;
+
+    // Don't do role check here since we'd need a DB call.
+    // Instead, let the pages handle role checking client-side.
+    // But DO redirect auth pages:
+    const authPaths = ["/login", "/register"];
+    const isAuthPath = authPaths.some(path =>
+      request.nextUrl.pathname.startsWith(path)
+    );
+
+    if (isAuthPath) {
+      // Check if user's profile suggests they're a member
+      // For simplicity, redirect to /m if coming from /m/login, /dashboard if from /login
+      const url = request.nextUrl.clone();
+      if (request.nextUrl.pathname === "/m/login") {
+        url.pathname = "/m";
+      } else {
+        url.pathname = "/dashboard";
+      }
+      return NextResponse.redirect(url);
+    }
   }
 
   return supabaseResponse;

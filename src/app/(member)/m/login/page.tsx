@@ -204,8 +204,13 @@ export default function MemberLoginPage() {
           </Link>
         </div>
 
+        {/* Test account hint */}
+        <p className="mt-6 text-center text-xs text-[#080708]/40">
+          테스트 계정: member@test.com / 1234
+        </p>
+
         {/* Admin link */}
-        <div className="mt-8 text-center">
+        <div className="mt-4 text-center">
           <Link
             href="/login"
             className="text-xs text-[#080708]/40 hover:text-[#080708]/60 transition-colors"

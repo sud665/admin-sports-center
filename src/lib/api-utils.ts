@@ -6,8 +6,9 @@ interface SessionUser {
   id: string;
   email: string;
   name: string;
-  role: "admin" | "instructor";
+  role: "admin" | "instructor" | "member";
   color?: string | null;
+  memberId?: string | null;
 }
 
 interface SessionResult {
@@ -31,14 +32,15 @@ export async function getAuthSession(): Promise<SessionResult> {
     }
 
     // Get user profile from DB
-    let profile: { name: string; role: string; color: string | null } | null = null;
+    let profile: { name: string; role: string; color: string | null; memberId?: string } | null = null;
 
     if (isMockMode()) {
       // Mock user profiles
-      const mockProfiles: Record<string, { name: string; role: string; color: string | null }> = {
+      const mockProfiles: Record<string, { name: string; role: string; color: string | null; memberId?: string }> = {
         "admin@test.com": { name: "관리자", role: "admin", color: null },
         "instructor@test.com": { name: "김태권", role: "instructor", color: "#3B82F6" },
         "instructor2@test.com": { name: "이합기", role: "instructor", color: "#10B981" },
+        "member@test.com": { name: "박지수", role: "member", color: null, memberId: "mem-001" },
       };
       profile = mockProfiles[user.email ?? ""] ?? { name: user.email?.split("@")[0] ?? "사용자", role: "admin", color: null };
     } else {
@@ -61,8 +63,9 @@ export async function getAuthSession(): Promise<SessionResult> {
           id: user.id,
           email: user.email ?? "",
           name: profile.name,
-          role: profile.role as "admin" | "instructor",
+          role: profile.role as "admin" | "instructor" | "member",
           color: profile.color,
+          memberId: profile.memberId ?? null,
         },
       },
       error: null,

@@ -16,6 +16,7 @@ export async function GET() {
       const mockProfiles: Record<string, { name: string; role: string; color: string | null; memberId: string | null }> = {
         "admin@test.com": { name: "관리자", role: "admin", color: null, memberId: null },
         "instructor@test.com": { name: "김태권", role: "instructor", color: "#3B82F6", memberId: null },
+        "member@test.com": { name: "박지수", role: "member", color: null, memberId: "mem-001" },
       };
       const profile = mockProfiles[user.email ?? ""] ?? { name: user.email?.split("@")[0] ?? "사용자", role: "admin", color: null, memberId: null };
       return NextResponse.json(profile);

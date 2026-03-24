@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from "react";
 import { useAuth } from "@/lib/hooks/use-auth";
-import { useBookings, useCancelBooking, type Booking } from "@/lib/hooks/use-bookings";
+import { useCancelBooking, type Booking } from "@/lib/hooks/use-bookings";
+import { useQuery } from "@tanstack/react-query";
 import { CalendarDays, Clock, User, X, CheckCircle2, XCircle, ChevronLeft, ChevronRight } from "lucide-react";
 
 type Tab = "bookings" | "attendance";
@@ -37,23 +38,29 @@ export default function MyPage() {
   const [activeTab, setActiveTab] = useState<Tab>("bookings");
   const [cancelTarget, setCancelTarget] = useState<string | null>(null);
 
-  // Get wide date range for bookings
   const now = new Date();
-  const startDate = new Date(now.getFullYear(), now.getMonth() - 3, 1).toISOString().split("T")[0];
-  const endDate = new Date(now.getFullYear(), now.getMonth() + 3, 0).toISOString().split("T")[0];
-
-  const { data: allBookings, isLoading: bookingsLoading } = useBookings(startDate, endDate);
   const cancelMutation = useCancelBooking();
+
+  // Fetch bookings directly for this member
+  const { data: allBookings, isLoading: bookingsLoading } = useQuery({
+    queryKey: ["member-bookings", user?.memberId],
+    queryFn: async () => {
+      if (!user?.memberId) return [];
+      const res = await fetch(`/api/member/bookings?memberId=${user.memberId}`);
+      if (!res.ok) return [];
+      return res.json();
+    },
+    enabled: !!user?.memberId,
+  });
 
   // Calendar month state
   const [calMonth, setCalMonth] = useState(now.getMonth());
   const [calYear, setCalYear] = useState(now.getFullYear());
 
-  // Filter bookings for this member
   const myBookings = useMemo(() => {
-    if (!allBookings || !user?.memberId) return [];
-    return allBookings.filter((b) => b.memberId === user.memberId);
-  }, [allBookings, user?.memberId]);
+    if (!allBookings) return [];
+    return allBookings as Booking[];
+  }, [allBookings]);
 
   // Group bookings
   const grouped = useMemo(() => {
