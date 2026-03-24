@@ -10,12 +10,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { LogOut } from "lucide-react";
+import { NotificationBell } from "./notification-bell";
 
 export function Header() {
   const { user, signOut } = useAuth();
 
   return (
-    <header className="sticky top-0 z-20 flex h-14 items-center justify-end border-b bg-background pl-14 pr-4 md:pl-6 md:pr-6">
+    <header className="sticky top-0 z-20 flex h-14 items-center justify-end gap-1 border-b bg-background pl-14 pr-4 md:pl-6 md:pr-6">
+      <NotificationBell />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="gap-2">

@@ -5,6 +5,7 @@ import slotsData from "./slots.json";
 import membershipsData from "./memberships.json";
 import attendancesData from "./attendances.json";
 import programsData from "./programs.json";
+import notificationsData from "./notifications.json";
 
 // --- 유틸 ---
 function formatDate(d: Date): string {
@@ -236,6 +237,13 @@ export function getMockPrograms() {
       instructorName: instructor?.name ?? null,
     };
   });
+}
+
+// --- Mock 알림 ---
+export function getMockNotifications(userId: string) {
+  return notificationsData
+    .filter((n) => n.userId === userId)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }
 
 // --- 데모 모드 헬퍼 ---

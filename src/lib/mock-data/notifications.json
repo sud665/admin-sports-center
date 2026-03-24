@@ -1,0 +1,9 @@
+[
+  { "id": "noti-001", "userId": "admin-001", "type": "booking", "title": "새 예약", "message": "박지수 님이 오늘 10:00 필라테스 수업을 예약했습니다.", "isRead": false, "createdAt": "2026-03-24T08:30:00Z" },
+  { "id": "noti-002", "userId": "admin-001", "type": "membership_expiry", "title": "수강권 만료 임박", "message": "최민호 님의 30회 수강권이 3일 후 만료됩니다. (잔여 2회)", "isRead": false, "createdAt": "2026-03-24T07:00:00Z" },
+  { "id": "noti-003", "userId": "admin-001", "type": "attendance", "title": "출석 완료", "message": "정서연 님이 14:00 수업에 출석했습니다.", "isRead": true, "createdAt": "2026-03-23T14:05:00Z" },
+  { "id": "noti-004", "userId": "admin-001", "type": "cancel", "title": "예약 취소", "message": "한유진 님이 내일 10:00 수업을 취소했습니다.", "isRead": true, "createdAt": "2026-03-23T11:20:00Z" },
+  { "id": "noti-005", "userId": "admin-001", "type": "new_member", "title": "새 회원 등록", "message": "오승현 님이 새로 등록되었습니다.", "isRead": true, "createdAt": "2026-03-22T09:00:00Z" },
+  { "id": "noti-006", "userId": "admin-001", "type": "settlement", "title": "정산 완료", "message": "2월 강사 정산이 완료되었습니다.", "isRead": true, "createdAt": "2026-03-21T18:00:00Z" },
+  { "id": "noti-007", "userId": "inst-001", "type": "booking", "title": "새 예약", "message": "최민호 님이 내일 14:00 수업을 예약했습니다.", "isRead": false, "createdAt": "2026-03-24T09:15:00Z" }
+]
