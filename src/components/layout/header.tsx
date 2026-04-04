@@ -20,9 +20,9 @@ export function Header() {
       <NotificationBell />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="gap-2">
+          <Button variant="ghost" className="gap-2" aria-label={`${user?.name ?? "계정"} 메뉴`}>
             <Avatar className="h-7 w-7">
-              <AvatarFallback className="text-xs bg-[#3772FF] text-white">
+              <AvatarFallback className="text-xs bg-primary text-primary-foreground">
                 {user?.name?.[0] ?? "?"}
               </AvatarFallback>
             </Avatar>

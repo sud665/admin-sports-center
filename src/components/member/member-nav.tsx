@@ -20,7 +20,8 @@ export function MemberNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] z-50"
+      aria-label="멤버 네비게이션"
+      className="fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-[0_-2px_10px_rgba(0,0,0,0.05)] z-50"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <div className="max-w-lg mx-auto flex items-center justify-around h-16">
@@ -34,8 +35,9 @@ export function MemberNav() {
             <Link
               key={tab.href}
               href={tab.href}
+              aria-current={isActive ? "page" : undefined}
               className={`flex flex-col items-center justify-center gap-0.5 min-w-[56px] py-1 transition-colors ${
-                isActive ? "text-[#3772FF]" : "text-gray-400"
+                isActive ? "text-primary" : "text-muted-foreground"
               }`}
             >
               <Icon className="w-6 h-6" strokeWidth={isActive ? 2.2 : 1.8} />

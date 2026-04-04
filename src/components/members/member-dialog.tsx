@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -112,7 +113,7 @@ export function MemberDialog({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="member-name">
-              이름 <span className="text-[#DF2935]">*</span>
+              이름 <span className="text-destructive">*</span>
             </Label>
             <Input
               id="member-name"
@@ -121,11 +122,15 @@ export function MemberDialog({
                 setForm({ ...form, name: e.target.value });
                 if (e.target.value.trim()) setNameError(false);
               }}
-              className={nameError ? "border-[#DF2935] focus-visible:ring-[#DF2935]/30" : ""}
+              aria-invalid={nameError}
+              aria-describedby={nameError ? "member-name-error" : undefined}
+              className={nameError ? "border-destructive focus-visible:ring-destructive/30" : ""}
               placeholder="회원 이름"
             />
             {nameError && (
-              <p className="text-xs text-[#DF2935]">이름을 입력해주세요</p>
+              <p id="member-name-error" role="alert" className="text-xs text-destructive">
+                이름을 입력해주세요
+              </p>
             )}
           </div>
 
@@ -159,6 +164,7 @@ export function MemberDialog({
                     <SelectItem key={inst.id} value={inst.id}>
                       <span className="flex items-center gap-2">
                         <span
+                          aria-hidden="true"
                           className="inline-block w-3 h-3 rounded-full"
                           style={{ backgroundColor: inst.color || "#ccc" }}
                         />
@@ -172,13 +178,13 @@ export function MemberDialog({
 
           <div className="space-y-2">
             <Label htmlFor="member-memo">메모</Label>
-            <textarea
+            <Textarea
               id="member-memo"
               placeholder="특이사항, 주의사항 등"
               value={form.memo}
               onChange={(e) => setForm({ ...form, memo: e.target.value })}
               rows={3}
-              className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+              className="resize-none"
             />
           </div>
 
@@ -190,11 +196,7 @@ export function MemberDialog({
             >
               취소
             </Button>
-            <Button
-              type="submit"
-              disabled={isPending}
-              className="bg-[#3772FF] hover:bg-[#3772FF]/90 text-white"
-            >
+            <Button type="submit" disabled={isPending}>
               {isPending ? "처리 중..." : isEdit ? "수정" : "등록"}
             </Button>
           </div>

@@ -8,7 +8,9 @@ const withPWA = withPWAInit({
 } as Parameters<typeof withPWAInit>[0]);
 
 const nextConfig: NextConfig = {
-  turbopack: {},
+  turbopack: {
+    root: __dirname,
+  },
   async headers() {
     return [
       {

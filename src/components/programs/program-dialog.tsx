@@ -10,6 +10,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Check } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -148,7 +150,7 @@ export function ProgramDialog({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="program-name">
-              프로그램명 <span className="text-[#DF2935]">*</span>
+              프로그램명 <span className="text-destructive">*</span>
             </Label>
             <Input
               id="program-name"
@@ -157,16 +159,20 @@ export function ProgramDialog({
                 setForm({ ...form, name: e.target.value });
                 if (e.target.value.trim()) setNameError(false);
               }}
-              className={nameError ? "border-[#DF2935] focus-visible:ring-[#DF2935]/30" : ""}
+              aria-invalid={nameError}
+              aria-describedby={nameError ? "program-name-error" : undefined}
+              className={nameError ? "border-destructive focus-visible:ring-destructive/30" : ""}
               placeholder="프로그램 이름"
             />
             {nameError && (
-              <p className="text-xs text-[#DF2935]">프로그램명을 입력해주세요</p>
+              <p id="program-name-error" role="alert" className="text-xs text-destructive">
+                프로그램명을 입력해주세요
+              </p>
             )}
           </div>
 
           <div className="space-y-2">
-            <Label>카테고리 <span className="text-[#DF2935]">*</span></Label>
+            <Label>카테고리 <span className="text-destructive">*</span></Label>
             <Select
               value={form.category}
               onValueChange={(v) => setForm({ ...form, category: v })}
@@ -186,13 +192,13 @@ export function ProgramDialog({
 
           <div className="space-y-2">
             <Label htmlFor="program-desc">설명</Label>
-            <textarea
+            <Textarea
               id="program-desc"
               placeholder="프로그램 설명"
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
               rows={3}
-              className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+              className="resize-none"
             />
           </div>
 
@@ -234,20 +240,14 @@ export function ProgramDialog({
                   className="w-8 h-8 rounded-full border-2 transition-all flex items-center justify-center"
                   style={{
                     backgroundColor: c.value,
-                    borderColor: form.color === c.value ? "#080708" : "transparent",
+                    borderColor: form.color === c.value ? "var(--centeron-black)" : "transparent",
                   }}
                   title={c.label}
+                  aria-pressed={form.color === c.value}
+                  aria-label={c.label}
                 >
                   {form.color === c.value && (
-                    <svg
-                      className="w-4 h-4 text-white"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={3}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
+                    <Check aria-hidden="true" className="w-4 h-4 text-white" strokeWidth={3} />
                   )}
                 </button>
               ))}
@@ -273,6 +273,7 @@ export function ProgramDialog({
                     <SelectItem key={inst.id} value={inst.id}>
                       <span className="flex items-center gap-2">
                         <span
+                          aria-hidden="true"
                           className="inline-block w-3 h-3 rounded-full"
                           style={{ backgroundColor: inst.color || "#ccc" }}
                         />
@@ -292,11 +293,7 @@ export function ProgramDialog({
             >
               취소
             </Button>
-            <Button
-              type="submit"
-              disabled={isPending}
-              className="bg-[#3772FF] hover:bg-[#3772FF]/90 text-white"
-            >
+            <Button type="submit" disabled={isPending}>
               {isPending ? "처리 중..." : isEdit ? "수정" : "등록"}
             </Button>
           </div>

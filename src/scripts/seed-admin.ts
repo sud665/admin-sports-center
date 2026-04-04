@@ -1,11 +1,12 @@
-import "dotenv/config";
+import { config } from "dotenv";
+config({ path: ".env.local" });
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { users } from "../lib/db/schema";
 import bcrypt from "bcryptjs";
 
 async function seed() {
-  const client = postgres(process.env.DATABASE_URL!);
+  const client = postgres(process.env.DATABASE_URL!, { ssl: "require" });
   const db = drizzle(client);
 
   const passwordHash = await bcrypt.hash("admin1234", 10);

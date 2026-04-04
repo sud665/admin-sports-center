@@ -53,10 +53,10 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
           onClick={onNavigate}
           aria-current={pathname.startsWith(item.href) ? "page" : undefined}
           className={cn(
-            "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+            "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors border-l-[3px]",
             pathname.startsWith(item.href)
-              ? "bg-[#3772FF]/10 text-[#3772FF] border-l-3 border-[#3772FF]"
-              : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              ? "bg-primary/10 text-primary border-primary"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground border-transparent"
           )}
         >
           <item.icon className="h-4 w-4" />

@@ -12,12 +12,12 @@ import {
 } from "@/lib/hooks/use-notifications";
 
 const TYPE_COLORS: Record<Notification["type"], string> = {
-  booking: "#3772FF",
-  membership_expiry: "#FDCA40",
+  booking: "var(--primary)",
+  membership_expiry: "var(--centeron-yellow)",
   attendance: "#10B981",
-  cancel: "#DF2935",
-  new_member: "#3772FF",
-  settlement: "#FDCA40",
+  cancel: "var(--destructive)",
+  new_member: "var(--primary)",
+  settlement: "var(--centeron-yellow)",
 };
 
 function formatTimeAgo(dateStr: string): string {
@@ -85,10 +85,12 @@ export function NotificationBell() {
         className="relative h-9 w-9"
         onClick={() => setOpen((prev) => !prev)}
         aria-label="알림"
+        aria-expanded={open}
+        aria-haspopup="dialog"
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
-          <span aria-live="polite" className="absolute -top-0.5 -right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#DF2935] px-1 text-[10px] font-bold text-white animate-pulse">
+          <span aria-live="polite" className="absolute -top-0.5 -right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold text-destructive-foreground animate-pulse">
             {unreadCount > 99 ? "99+" : unreadCount}
           </span>
         )}
@@ -96,14 +98,18 @@ export function NotificationBell() {
 
       {/* Dropdown */}
       {open && (
-        <div role="menu" className="absolute right-0 top-full mt-2 w-[360px] rounded-lg border bg-background shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+        <div
+          role="dialog"
+          aria-label="알림 목록"
+          className="absolute right-0 top-full mt-2 w-[360px] rounded-lg border bg-background shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
+        >
           {/* Header */}
           <div className="flex items-center justify-between border-b px-4 py-3">
             <h3 className="text-sm font-semibold">알림</h3>
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="text-xs text-[#3772FF] hover:underline transition-colors"
+                className="text-xs text-primary hover:underline transition-colors"
               >
                 모두 읽음
               </button>
@@ -122,11 +128,12 @@ export function NotificationBell() {
                   key={notification.id}
                   onClick={() => handleNotificationClick(notification)}
                   className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-muted/50 ${
-                    !notification.isRead ? "bg-[#3772FF]/5" : ""
+                    !notification.isRead ? "bg-primary/5" : ""
                   }`}
                 >
-                  {/* Type Color Dot */}
+                  {/* Type Color Dot — decorative */}
                   <span
+                    aria-hidden="true"
                     className="mt-1.5 h-2 w-2 shrink-0 rounded-full"
                     style={{ backgroundColor: TYPE_COLORS[notification.type] }}
                   />
@@ -138,7 +145,10 @@ export function NotificationBell() {
                         {notification.title}
                       </span>
                       {!notification.isRead && (
-                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#3772FF]" />
+                        <>
+                          <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                          <span className="sr-only">읽지 않음</span>
+                        </>
                       )}
                     </div>
                     <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2">
